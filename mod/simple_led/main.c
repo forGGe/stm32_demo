@@ -3,6 +3,7 @@
 
 #define STACK_START 0x20001000
 void handler_reset(void);
+int main(void);
 
 /*
  * Interrupt vector table
@@ -14,8 +15,8 @@ void handler_reset(void);
  * any fault
  */
 unsigned int *__vector_handlers[] __attribute__ ((section(".vectors"))) = {
-    (unsigned int *) STACK_START,		/* Initial stack pointer */
-    (unsigned int *) handler_reset,		/* Reset handler pointer */
+	(unsigned int *) STACK_START,		/* Initial stack pointer */
+	(unsigned int *) handler_reset,		/* Reset handler pointer */
 };
 
 void handler_reset(void) {
