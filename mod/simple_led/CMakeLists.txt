@@ -4,4 +4,4 @@ INCLUDE_DIRECTORIES(${STM32_INCLUDE_DIR})
 
 ADD_EXECUTABLE(simple_led main.c)
 
-TARGET_LINK_LIBRARIES(simple_led stm32)
+TARGET_LINK_LIBRARIES(simple_led stm32 startup)

@@ -1,28 +1,6 @@
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_rcc.h"
 
-#define STACK_START 0x20001000
-void handler_reset(void);
-int main(void);
-
-/*
- * Interrupt vector table
- * According to ARM spec. first word is an initial stack pointer
- * Second is a pointer to reset handler, which executes immediately
- * after stack pointer was set.
- *
- * Ideally, all interrupt handlers must be set in order to catch
- * any fault
- */
-unsigned int *__vector_handlers[] __attribute__ ((section(".vectors"))) = {
-	(unsigned int *) STACK_START,		/* Initial stack pointer */
-	(unsigned int *) handler_reset,		/* Reset handler pointer */
-};
-
-void handler_reset(void) {
-	/* Don't care about anything, just launch 'main' for a demo*/
-	main();
-}
 
 int main(void)
 {
