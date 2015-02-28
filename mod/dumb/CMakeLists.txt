@@ -1,5 +1,8 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-ADD_EXECUTABLE(dumb main.c)
+add_executable(dumb main.c)
+target_link_libraries(dumb startup)
 
-TARGET_LINK_LIBRARIES(dumb startup)
+list(APPEND TargetsList dumb)
+set(TargetsList "${TargetsList}" PARENT_SCOPE)
+

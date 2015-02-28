@@ -33,6 +33,10 @@ unsigned int *___interrupt_vectors[] __attribute__ ((section("vectors"))) = {
 
 };
 
+void pr(void) {
+	main();
+}
+
 void irq_reset(void) {
 	/* Don't care about anything, just launch 'main' for a demo */
 	main();

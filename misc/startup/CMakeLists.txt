@@ -1,3 +1,3 @@
-ADD_LIBRARY(startup STATIC
+add_library(startup STATIC
 startup.c
 )

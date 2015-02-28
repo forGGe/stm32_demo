@@ -1,48 +1,52 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-PROJECT(stm32demos)
+# verbose mode
+#set(CMAKE_VERBOSE_MAKEFILE on)
 
-SET(CMAKE_SYSTEM_NAME Generic)
-SET(CMAKE_C_COMPILER arm-none-eabi-gcc)
-SET(CMAKE_CXX_COMPILER arm-none-eabi-g++)
-SET(CMAKE_C_LINKER arm-none-eabi-ld)
-SET(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_LINKER} <OBJECTS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <LINK_LIBRARIES> -o <TARGET>")
-SET(CMAKE_OBJCOPY arm-none-eabi-objcopy)
+project(stm32demos)
 
-SET(CMAKE_FIND_ROOT_PATH /usr/arm-none-eabi)
-SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
-SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
+# this one is important
+set(CMAKE_SYSTEM_NAME Generic)
+#this one not so much
+set(CMAKE_SYSTEM_VERSION 1)
 
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-m4 -mthumb -fdata-sections -ffunction-sections -fno-common -g3 -O0")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-m4 -mthumb -fdata-sections -ffunction-sections -fno-common")
-SET(CMAKE_EXE_LINKER_FLAGS "-T${CMAKE_CURRENT_SOURCE_DIR}/misc/stm32.ld -nostartfiles --gc-sections")
-SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
-SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+# specify the cross compiler
+set(CMAKE_C_COMPILER arm-none-eabi-gcc)
+set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
+set(CMAKE_C_LINKER arm-none-eabi-ld)
 
-# Libraries and startup
+# where is the target environment
+set(CMAKE_FIND_ROOT_PATH /usr/arm-none-eabi)
 
-ADD_SUBDIRECTORY(lib/stm32 stm32)
-ADD_SUBDIRECTORY(misc/startup startup)
+# search for programs in the build host directories
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+# for libraries and headers in the target directories
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-# Modules
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-m4 -mthumb -fdata-sections -ffunction-sections -fno-common -g3 -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-m4 -mthumb -fdata-sections -ffunction-sections -fno-common")
+set(CMAKE_C_LINK_FLAGS "-T${CMAKE_CURRENT_SOURCE_DIR}/misc/stm32.ld -nostartfiles --gc-sections")
+set(CMAKE_OBJCOPY arm-none-eabi-objcopy)
+set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_LINKER} <OBJECTS> <CMAKE_C_LINK_FLAGS> <LINK_LIBRARIES> -o <TARGET>")
 
-ADD_SUBDIRECTORY(mod/simple_led simple_led)
-ADD_SUBDIRECTORY(mod/dumb dumb)
+# set our custom list containing targets to be built
+set(TargetsList)
 
-# Custom targets for modules
+# startup code
+add_subdirectory(misc/startup)
 
-ADD_CUSTOM_TARGET(simple_led.bin ALL
-COMMAND ${CMAKE_OBJCOPY} --output-format=binary ${CMAKE_CURRENT_BINARY_DIR}/simple_led/simple_led simple_led.bin
-DEPENDS simple_led
-COMMENT "Making binary simple_led.bin"
-)
+# modules definition
+add_subdirectory(mod/dumb)
 
-ADD_CUSTOM_TARGET(dumb.bin ALL
-COMMAND ${CMAKE_OBJCOPY} --output-format=binary ${CMAKE_CURRENT_BINARY_DIR}/dumb/dumb dumb.bin
-DEPENDS dumb
-COMMENT "Making binary dumb.bin"
-)
+# generate custom binary targets for each module built
+foreach(Target ${TargetsList})
+message("Configuring binary target for ${Target}")
+    add_custom_target(${Target}.bin ALL
+    COMMAND ${CMAKE_OBJCOPY} --output-format=binary ${CMAKE_CURRENT_BINARY_DIR}/mod/${Target}/${Target} ${Target}.bin
+    DEPENDS ${Target}
+    COMMENT "Making binary ${Target}"
+    )
 
-SET_DIRECTORY_PROPERTIES(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES simple_led.bin)
-SET_DIRECTORY_PROPERTIES(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES dumb.bin)
+    set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES ${Target}.bin)
+endforeach(Target)
