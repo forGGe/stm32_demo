@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 # verbose mode
-#set(CMAKE_VERBOSE_MAKEFILE on)
+# set(CMAKE_VERBOSE_MAKEFILE on)
 
 project(stm32demos)
 
@@ -24,6 +24,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
+# avoid using any additional flags when linking with shared libraries
+set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+
+# set various flags for C\C++ compiler and linker
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-m4 -mthumb -fdata-sections -ffunction-sections -fno-common -g3 -O0")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-m4 -mthumb -fdata-sections -ffunction-sections -fno-common")
 set(CMAKE_C_LINK_FLAGS "-T${CMAKE_CURRENT_SOURCE_DIR}/misc/stm32.ld -nostartfiles --gc-sections")
@@ -33,13 +37,17 @@ set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_LINKER} <OBJECTS> <CMAKE_C_LINK_FLAGS> <L
 # set our custom list containing targets to be built
 set(TargetsList)
 
-# startup code
+# startup code (built as library to link with)
 add_subdirectory(misc/startup)
 
-# modules definition
-add_subdirectory(mod/dumb)
+# STM32 peripherial library (built as library to link with)
+add_subdirectory(lib/stm32)
 
-# generate custom binary targets for each module built
+# modules itself
+add_subdirectory(mod/dumb)
+add_subdirectory(mod/simple_led)
+
+# generate custom binary targets for each module built y
 foreach(Target ${TargetsList})
 message("Configuring binary target for ${Target}")
     add_custom_target(${Target}.bin ALL

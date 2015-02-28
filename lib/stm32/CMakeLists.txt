@@ -1,8 +1,9 @@
-INCLUDE_DIRECTORIES(inc)
+include_directories(inc)
 
-SET(STM32_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/inc/" PARENT_SCOPE)
+# export includes to other modules
+set(STM32_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/inc/" PARENT_SCOPE)
 
-ADD_LIBRARY(stm32 STATIC
+add_library(stm32 STATIC
 inc/stm32f4xx_wwdg.h
 inc/stm32f4xx_rtc.h
 inc/misc.h
