@@ -1,21 +1,23 @@
 Reposotory contains library and main files used for flashing STM32 Discovery board (STM32F407 on board)
-Note: library a bit modified to work with Discovery board. Original stm32 periph lib resides here:
+Note: library a bit modified to work with STM32F4xx Discovery board. Original stm32 periph lib resides here:
 [http://www.st.com/web/en/catalog/tools/PF257901](http://www.st.com/web/en/catalog/tools/PF257901)
 
-Usual commands are below.
+Usual commands are following (given that working directory is project directory):
 
-- build
+- configure and build
     ```bash
-    $ make clean
+    $ mkdir build
+    $ cd build
+    $ cmake ..
     $ make
     ```
 
-- openocd:
+- launch openocd (this may require root privileges):
     ```bash
     $ openocd -f ./stm32f4discovery.cfg
     ```
 
-- telnet:
+- flashing using telnet (given that openocd is running):
     ```
     $ telnet localhost 4444
     > poll
@@ -24,7 +26,7 @@ Usual commands are below.
     > flash write_image erase build/demo.bin 0x08000000
     ```
 
-- gdb:
+- flashing using gdb (given that openocd is running):
     ```
     arm-none-eabi-gdb -f ./build/demo.elf
     (gdb) target remote :3333
