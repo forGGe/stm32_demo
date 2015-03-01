@@ -20,7 +20,7 @@
  */
 
 #include <stdbool.h>
-#include "stm32f4xx.h"
+#include <stm32f4xx.h>
 
 /* Amount of cycles per each wait */
 #define CYCLES_TO_WAIT  10000
@@ -80,5 +80,7 @@ int main(void)
 	for (i; i < ITERATIONS; ++i) {
 		DWT_cycles(CYCLES_TO_WAIT);
 	}
+
+	return 0;
 }
 

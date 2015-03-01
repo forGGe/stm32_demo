@@ -1,4 +1,5 @@
-Reposotory contains library and main files used for flashing STM32 Discovery board (STM32F407 on board)
+Reposotory contains simple examples, usefull STM32 Peripherial library and core files, 
+used for flashing STM32 Discovery board (STM32F407 on board).
 Note: library a bit modified to work with STM32F4xx Discovery board. Original stm32 periph lib resides here:
 [http://www.st.com/web/en/catalog/tools/PF257901](http://www.st.com/web/en/catalog/tools/PF257901)
 
@@ -28,7 +29,7 @@ Usual commands are following (given that working directory is project directory)
 
 - flashing using gdb (given that openocd is running):
     ```
-    arm-none-eabi-gdb -f ./build/mod/simple_led
+    $ arm-none-eabi-gdb -f ./build/mod/simple_led
     (gdb) target remote :3333
     (gdb) monitor reset halt
     (gdb) load		# note: it loads into adresses defined in linker script
