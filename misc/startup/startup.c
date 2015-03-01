@@ -30,12 +30,7 @@ unsigned int *___interrupt_vectors[] __attribute__ ((section("vectors"))) = {
 	/** \TODO add handlers according
 	 * http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0553a/BABIFJFG.html
 	 */
-
 };
-
-void pr(void) {
-	main();
-}
 
 void irq_reset(void) {
 	/* Don't care about anything, just launch 'main' for a demo */

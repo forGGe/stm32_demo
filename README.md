@@ -14,7 +14,7 @@ Usual commands are following (given that working directory is project directory)
 
 - launch openocd (this may require root privileges):
     ```bash
-    $ openocd -f ./stm32f4discovery.cfg
+    $ openocd -f ./misc/stm32f4discovery.cfg
     ```
 
 - flashing using telnet (given that openocd is running):
@@ -23,14 +23,14 @@ Usual commands are following (given that working directory is project directory)
     > poll
     > reset halt
     > flash probe 0
-    > flash write_image erase build/demo.bin 0x08000000
+    > flash write_image erase build/simple_led.bin 0x08000000
     ```
 
 - flashing using gdb (given that openocd is running):
     ```
-    arm-none-eabi-gdb -f ./build/demo.elf
+    arm-none-eabi-gdb -f ./build/mod/simple_led
     (gdb) target remote :3333
     (gdb) monitor reset halt
-    (gdb) load		# note: it loads into memory, not to flash
+    (gdb) load		# note: it loads into adresses defined in linker script
     ```
 

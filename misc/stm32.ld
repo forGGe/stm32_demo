@@ -24,7 +24,7 @@ SECTIONS
        . = ALIGN(4);
        KEEP(*(vectors))
        KEEP(*(.text))
-    } > rom
+    } > flash
 
     /* .bss goes to ram */
     .bss  : { *(.bss*) } > ram

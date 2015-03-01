@@ -4,7 +4,7 @@
 
 int main(void)
 {
-	int i, j;
+	volatile unsigned int i, j;
 	uint16_t pins = GPIO_Pin_15 | GPIO_Pin_14 | GPIO_Pin_13 | GPIO_Pin_12;
 
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
@@ -28,4 +28,6 @@ int main(void)
 		for (i = 0; i < 500000; i++);
 		GPIO_ResetBits(GPIOD, pin);
 	}
+
+	return 0;
 }

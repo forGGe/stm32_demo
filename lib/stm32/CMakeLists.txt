@@ -3,6 +3,13 @@ include_directories(inc)
 # export includes to other modules
 set(STM32_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/inc/" PARENT_SCOPE)
 
+# override warnings, since library contains a lot of them
+set(CC_NO_EXTRA_WARNINGS "-Wno-pedantic -Wno-all -Wno-extra")
+set(CXX_NO_EXTRA_WARNINGS "-Wno-effc++")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CC_NO_EXTRA_WARNINGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} ${CXX_NO_EXTRA_WARNINGS}")
+
 add_library(stm32 STATIC
 inc/stm32f4xx_wwdg.h
 inc/stm32f4xx_rtc.h

@@ -3,8 +3,9 @@ cmake_minimum_required(VERSION 2.8)
 # include as system helps avoid warnings in headers
 include_directories(SYSTEM ${STM32_INCLUDE_DIR})
 
-add_executable(simple_led main.c)
-target_link_libraries(simple_led stm32 startup)
+add_executable(delay main.c)
+target_link_libraries(delay startup stm32)
 
-list(APPEND TargetsList simple_led)
+list(APPEND TargetsList delay)
 set(TargetsList "${TargetsList}" PARENT_SCOPE)
+
