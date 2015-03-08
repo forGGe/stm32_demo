@@ -68,6 +68,7 @@ add_subdirectory(lib/stm32_periph)
 # modules itself
 add_subdirectory(mod/delay)
 add_subdirectory(mod/simple_led)
+add_subdirectory(mod/uart_echo)
 
 # generate custom binary targets for each module built y
 foreach(Target ${TargetsList})
