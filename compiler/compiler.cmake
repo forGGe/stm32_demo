@@ -2,6 +2,7 @@
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # using Clang
+  include(${CMAKE_CURRENT_LIST_DIR}/clang/clang.cmake)
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
   # using GCC
   include(${CMAKE_CURRENT_LIST_DIR}/gnu/gnu.cmake)
