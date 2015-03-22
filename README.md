@@ -5,11 +5,11 @@ Note: library a bit modified to work with STM32F4xx Discovery board. Original st
 
 Usual commands are following (given that working directory is project directory):
 
-- configure and build
+- specify toolchain (gnu-arm-none-eabi e.g.), configure and build
     ```bash
     $ mkdir build
     $ cd build
-    $ cmake ..
+    $ cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/gnu-arm-none-eabi.cmake ..
     $ make
     ```
 
@@ -18,7 +18,7 @@ Usual commands are following (given that working directory is project directory)
     $ openocd -f ./misc/stm32f4discovery.cfg
     ```
 
-- flashing using telnet (given that openocd is running):
+- flash using telnet (given that openocd is running):
     ```
     $ telnet localhost 4444
     > poll
@@ -27,11 +27,11 @@ Usual commands are following (given that working directory is project directory)
     > flash write_image erase build/simple_led.bin 0x08000000
     ```
 
-- flashing using gdb (given that openocd is running):
+- or flash using gdb (given that openocd is running):
     ```
     $ arm-none-eabi-gdb -f ./build/mod/simple_led
     (gdb) target remote :3333
     (gdb) monitor reset halt
-    (gdb) load		# note: it loads into adresses defined in linker script
+    (gdb) load		# note: it loads into adress defined in the linker script
     ```
 
